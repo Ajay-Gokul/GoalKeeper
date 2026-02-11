@@ -1,0 +1,144 @@
+# =========================
+
+# General
+
+# =========================
+
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.lock
+*.bak
+
+# =========================
+
+# Node / React Native
+
+# =========================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Metro / Expo
+
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# React Native
+
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/*.keystore
+android/app/*.keystore
+
+ios/build/
+ios/DerivedData/
+ios/*.xcworkspace
+ios/Pods/
+ios/Podfile.lock
+
+# Environment files
+
+.env
+.env.*
+!.env.example
+
+# =========================
+
+# .NET / Visual Studio
+
+# =========================
+
+bin/
+obj/
+out/
+
+# User-specific files
+
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+
+.vs/
+*.vscode/
+
+# Build results
+
+Debug/
+Release/
+x64/
+x86/
+[Bb]uild/
+[Ll]ogs/
+
+# NuGet
+
+*.nupkg
+packages/
+*.snupkg
+.nuget/
+
+# Test results
+
+TestResults/
+
+# Publish output
+
+publish/
+
+# Resharper
+
+_ReSharper*/
+*.DotSettings.user
+
+# Rider
+
+.idea/
+
+# Azure
+
+*.azurePubxml
+
+# IIS Express
+
+.vs/
+iisexpress/
+
+# =========================
+
+# OS & Editor files
+
+# =========================
+
+*.orig
+*.rej
+
+# VS Code settings (optional – remove if you want to share settings)
+
+.vscode/
+
+# =========================
+
+# Secrets / certificates
+
+# =========================
+
+*.pfx
+*.key
+*.pem
+*.crt
+*.cer
