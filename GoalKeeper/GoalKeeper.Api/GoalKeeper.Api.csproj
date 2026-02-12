@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GoalKeeper.BusinessLogic\GoalKeeper.BusinessLogic.csproj" />
+    <ProjectReference Include="..\GoalKeeper.Model\GoalKeeper.Model.csproj" />
+    <ProjectReference Include="..\GoalKeeper.Repository\GoalKeeper.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
