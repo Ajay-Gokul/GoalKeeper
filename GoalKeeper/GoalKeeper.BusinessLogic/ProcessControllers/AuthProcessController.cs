@@ -21,10 +21,10 @@ namespace GoalKeeper.BusinessLogic.ProcessControllers
             var user = await _userRepository.GetUserByMail(mail);
 
             if (user == null)
-                throw new Exception("User not found");
+                throw new KeyNotFoundException("User not found");
 
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-                throw new Exception("Invalid password");
+                throw new ArgumentException("Invalid password");
 
             var token = await _tokenGenerationService.GenerateToken(user);
             return new UserDTO

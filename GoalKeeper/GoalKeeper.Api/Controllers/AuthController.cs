@@ -22,29 +22,15 @@ namespace GoalKeeper.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            try
-            {
-                var userData = await _authService.Login(request.Mail, request.Password);
-                return Ok(new { userData });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var userData = await _authService.Login(request.Mail, request.Password);
+            return Ok(new { userData });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            try
-            {
-                await _authService.Register(request);
-                return Ok("User registered");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _authService.Register(request);
+            return Ok();
         }
     }
 }

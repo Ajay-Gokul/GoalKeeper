@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Model.DTO;
 using Model.Entity;
 using System.Data;
+using GoalKeeper.Model.Exceptions;
 
 namespace GoalKeeper.Repository.Repository
 {
@@ -17,46 +18,35 @@ namespace GoalKeeper.Repository.Repository
 
         public async Task<User> GetUserByMail(string mail)
         {
-            try
+            using (var connection = _connectionFactory.CreateConnection())
+            using (var command = connection.CreateCommand())
             {
-                using (var connection = _connectionFactory.CreateConnection())
-                using (var command = connection.CreateCommand())
+                command.CommandText = "GetUserByMail";
+                command.CommandType = CommandType.StoredProcedure;
+
+                var mailParam = command.CreateParameter();
+                mailParam.ParameterName = "@Mail";
+                mailParam.Value = mail;
+                command.Parameters.Add(mailParam);
+
+                var sqlConnection = (SqlConnection)connection;
+                var sqlCommand = (SqlCommand)command;
+                await sqlConnection.OpenAsync();
+                using (var reader = await sqlCommand.ExecuteReaderAsync())
                 {
-                    command.CommandText = "GetUserByMail";
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    var mailParam = command.CreateParameter();
-                    mailParam.ParameterName = "@Mail";
-                    mailParam.Value = mail;
-                    command.Parameters.Add(mailParam);
-
-                    var sqlConnection = (SqlConnection)connection;
-                    var sqlCommand = (SqlCommand)command;
-                    await sqlConnection.OpenAsync();
-                    using (var reader = await sqlCommand.ExecuteReaderAsync())
+                    if (await reader.ReadAsync())
                     {
-                        if (await reader.ReadAsync())
+                        return new User
                         {
-                            return new User
-                            {
-                                UID = reader.GetGuid(reader.GetOrdinal("UID")),
-                                Name = reader.GetString(reader.GetOrdinal("Name")),
-                                Mail = reader.GetString(reader.GetOrdinal("Mail")),
-                                PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash"))
-                            };
-                        }
+                            UID = reader.GetGuid(reader.GetOrdinal("UID")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Mail = reader.GetString(reader.GetOrdinal("Mail")),
+                            PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash"))
+                        };
                     }
                 }
-                return null;
             }
-            catch (SqlException ex)
-            {
-                throw new Exception($"Database error while retrieving user: {ex.Message}", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error retrieving user by mail: {ex.Message}", ex);
-            }
+            return null;
         }
 
         public async Task RegisterUser(User user)
@@ -96,12 +86,12 @@ namespace GoalKeeper.Repository.Repository
                 }
             }
             catch (SqlException ex)
-            {
-                throw new Exception($"Database error while registering user: {ex.Message}", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error registering user: {ex.Message}", ex);
+            {                
+                if (ex.Number == 2601 || ex.Number == 2627)
+                {
+                    throw new DuplicateUserException("A user with this email already exists.", ex);
+                }
+                throw;
             }
         }
     }
