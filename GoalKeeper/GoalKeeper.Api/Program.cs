@@ -5,6 +5,7 @@ using GoalKeeper.Repository.Repository;
 using Model.DTO;
 using TokenService.Interface;
 using TokenService.Service;
+using GoalKeeper.Api.Middleware; // Add this using statement
 
 namespace GoalKeeper.Api
 {
@@ -36,8 +37,7 @@ namespace GoalKeeper.Api
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ITokenGenerationService, TokenGenerationService>();
             builder.Services.AddScoped<IAuthProcessController<UserDTO>, AuthProcessController>();
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -54,6 +54,8 @@ namespace GoalKeeper.Api
 
             // Use CORS policy
             app.UseCors("MyCors");
+
+            app.UseErrorHandlingMiddleware();
 
             app.UseAuthorization();
 
