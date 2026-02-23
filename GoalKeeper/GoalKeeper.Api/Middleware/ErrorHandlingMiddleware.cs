@@ -42,7 +42,7 @@ namespace GoalKeeper.Api.Middleware
                     (HttpStatusCode.BadRequest, "Invalid input provided."),
  
                 KeyNotFoundException =>
-                    (HttpStatusCode.NotFound, "User details not found."),
+                    (HttpStatusCode.NotFound, "Mail Id not found."),
  
                 UnauthorizedAccessException =>
                     (HttpStatusCode.Unauthorized, "You are not authorized to access this resource."),
